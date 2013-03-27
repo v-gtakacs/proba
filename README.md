@@ -41,13 +41,11 @@ Setup The HTTPS Connector
 * Override the instance name too, by overriding the `node["tomcat"]["instance_name"]` attribute (for example at role level). This is usually the name of your service.
 * Create a new element within the `credentials` encrypted data bag item with the same name defined with the `node["tomcat"]["instance_name"]` attribute. This element must contain two key-value pairs: `truststore_file_password` and `keystore_file_password`. These define the passwords for the jks files included within the generated server.xml. You need to define these settings for each environment.  
 **For example:** `"instance_name": { "truststore_file_password": "password1", "keystore_file_password": "password2" }`
-* The truststore and keystore files must be placed into the `/opt/tomcat/conf` directory during the deployment by **your own cookbook** (the cookbook which refers to the `tomcat` cookbook).
- 
-In order to place the jks files to the right place (`/opt/tomcat/conf`) during the deployment process you need to implement the followings **within your own cookbook** (the cookbook which refers to the `tomcat` cookbook):
-* Create the jks files using the following naming convention and move these files into the `files/default` directory **within your own cookbook**:
-   * The name of the truststore file is `trustedca.jks`.
-   * The name of the keystore file is `<environment_name>.jks` (for example: ewetest.jks).
-* Add the following operations to your Chef recipe **within your own cookbook**:
+* The truststore and keystore files must be placed into the `/opt/tomcat/conf` directory during the deployment by **your own cookbook** (the coookbook which refers to the `tomcat` cookbook). So you need to implement the followings **within your own cookbook**:
+   * Create the jks files using the following naming convention and move these files into the `files/default` directory within your own cookbook:
+      * The name of the truststore file is `trustedca.jks`.
+      * The name of the keystore file is `<environment_name>.jks` (for example: ewetest.jks).
+   * Add the following operations to your Chef recipe within your own cookbook:
 
 ```ruby
 cookbook_file "/opt/tomcat/conf/#{node.chef_environment}.jks" do
